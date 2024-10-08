@@ -9,7 +9,7 @@ function Header({ onSearch }) {
             <div className="flex items-center space-x-4">
                 <h1 className="text-[30px] uppercase font-bold text-red-600">MOVIE</h1>
 
-                <nav className="flex items-center space-x-4">
+                <nav className="flex items-center space-x-4 hidden sm:block">
                     <a href="#" className="text-white">
                         Home
                     </a>

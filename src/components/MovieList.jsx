@@ -1,9 +1,8 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import YouTube from "react-youtube";
-import { useState } from "react";
+import { useContext } from "react";
+import { MovieContext } from "../context/MovieProvider";
 
 // next, prev
 const responsive = {
@@ -24,46 +23,10 @@ const responsive = {
         breakpoint: { max: 600, min: 0 },
         items: 2
     }
-};;
-
-const opts = {
-    height: '390',
-    with: '640',
-    playerVars: {
-        autoplay: 1
-    },
 };
 
 function MovieList({ title, data }) {
-    // mo youtube video
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    // lay key cua video do
-    const [trailerUrl, setTrailerUrl] = useState("");
-
-    // ham click mo trailer
-    const handleTrailer = async (id) => {
-        setTrailerUrl('');
-        try {
-            const url = `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`;
-            const options = {
-                method: 'GET',
-                headers: {
-                    accept: 'application/json',
-                    Authorization: `Bearer ${import.meta.env.VITE_APP_KEY}`
-                }
-            };
-
-            const movieKey = await fetch(url, options);
-            const data = await movieKey.json();
-            setTrailerUrl(data.results[0].key);
-            setModalIsOpen(true);
-
-        } catch (error) {
-            console.log(error);
-            setModalIsOpen(false);
-
-        }
-    }
+    const { handleTrailer } = useContext(MovieContext);
 
     return (
         <div className="text-white p-10 mb-10">
@@ -91,28 +54,6 @@ function MovieList({ title, data }) {
                     ))
                 }
             </Carousel>
-
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
-                style={{
-                    overlay: {
-                        position: 'fixed',
-                        zIndex: 9999,
-                    },
-                    content: {
-                        top: '50%',
-                        left: '50%',
-                        right: 'auto',
-                        bottom: 'auto',
-                        marginRight: '-50%',
-                        transform: 'translate(-50%, -50%)',
-                    },
-                }}
-                contentLabel="Example Modal"
-            >
-                <YouTube videoId={trailerUrl} opts={opts} />
-            </Modal>
         </div>
     )
 }

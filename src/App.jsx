@@ -3,6 +3,7 @@ import Banner from './components/Banner'
 import Header from './components/Header'
 import MovieList from './components/MovieList'
 import MovieSearch from './components/MovieSearch';
+import { MovieProvider } from './context/MovieProvider';
 
 function App() {
   const [movie, setMovie] = useState([]);
@@ -74,21 +75,23 @@ function App() {
   }, []);
 
   return (
-    <div className='bg-black pb-10'>
-      <Header onSearch={handleSearch} />
-      <Banner />
+    <MovieProvider>
+      <div className='bg-black pb-10'>
+        <Header onSearch={handleSearch} />
+        <Banner />
 
-      {movieSearch.length > 0 ? (
-        <MovieSearch title={'Kết quả tìm kiếm'} data={movieSearch} />
-      ) : (
-        <>
-          <MovieList title={'Phim Xu Hướng'} data={movieXH} />
-          <MovieList title={'Phim Hot'} data={movie} />
-          <MovieList title={'Phim Đặc Biệt'} data={movieRate} />
-          <MovieList title={'Phim Phổ biến'} data={moviePopular} />
-        </>
-      )}
-    </div>
+        {movieSearch.length > 0 ? (
+          <MovieSearch title={'Kết quả tìm kiếm'} data={movieSearch} />
+        ) : (
+          <>
+            <MovieList title={'Phim Xu Hướng'} data={movieXH} />
+            <MovieList title={'Phim Hot'} data={movie} />
+            <MovieList title={'Phim Đặc Biệt'} data={movieRate} />
+            <MovieList title={'Phim Phổ biến'} data={moviePopular} />
+          </>
+        )}
+      </div>
+    </MovieProvider>
   )
 }
 
